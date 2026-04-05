@@ -485,6 +485,42 @@
             text-decoration: underline;
         }
 
+        /* Thumbnail Button Styles */
+        .thumbnail-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .thumbnail-btn:focus-visible {
+            outline: 3px solid var(--secondary-color);
+            outline-offset: 2px;
+        }
+
+        /* Accessibility Utilities */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Focus visible styles for keyboard navigation */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+            outline: 3px solid var(--secondary-color);
+            outline-offset: 2px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .main-image {
@@ -536,8 +572,8 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container-lg">
-            <a class="navbar-brand" href="index.html">
-                <i class="bi bi-house-fill icon-home"></i>PNK Inmobiliaria
+            <a class="navbar-brand" href="index.html" aria-label="Inicio - PNK Inmobiliaria">
+                <i class="bi bi-house-fill icon-home" aria-hidden="true"></i>PNK Inmobiliaria
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -555,11 +591,11 @@
                     </li>
                 </ul>
                 <div class="d-flex gap-2 ms-lg-3 flex-column flex-lg-row w-100 w-lg-auto mt-3 mt-lg-0">
-                    <a href="inicio_sesion.html" class="btn btn-outline-light btn-sm">
-                        <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+                    <a href="inicio_sesion.html" class="btn btn-outline-light btn-sm" aria-label="Iniciar sesión">
+                        <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Iniciar sesión
                     </a>
-                    <a href="resgistro_propietario.html" class="btn btn-light btn-sm">
-                        <i class="bi bi-person-plus"></i> Registrarse
+                    <a href="resgistro_propietario.html" class="btn btn-light btn-sm" aria-label="Registrarse en el sitio">
+                        <i class="bi bi-person-plus" aria-hidden="true"></i> Registrarse
                     </a>
                 </div>
             </div>
@@ -579,16 +615,16 @@
 
     <!-- GALLERY SECTION -->
     <div class="container-lg">
-        <div class="gallery-section">
+        <div class="gallery-section" role="region" aria-label="Galería de imágenes de la propiedad">
             <div class="row">
                 <div class="col-lg-8">
-                    <img id="mainImage" src="https://images.unsplash.com/photo-1570129477492-45ea003411af?w=800&h=600&fit=crop" class="main-image" alt="Imagen principal de la propiedad">
-                    <div class="thumbnail-gallery">
-                        <img src="https://images.unsplash.com/photo-1570129477492-45ea003411af?w=100&h=100&fit=crop" class="thumbnail active" onclick="changeMainImage(this)">
-                        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&h=100&fit=crop" class="thumbnail" onclick="changeMainImage(this)">
-                        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=100&h=100&fit=crop" class="thumbnail" onclick="changeMainImage(this)">
-                        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=100&h=100&fit=crop" class="thumbnail" onclick="changeMainImage(this)">
-                        <img src="https://images.unsplash.com/photo-1545224154-b3eef4e8f8d0?w=100&h=100&fit=crop" class="thumbnail" onclick="changeMainImage(this)">
+                    <img id="mainImage" src="https://images.unsplash.com/photo-1570129477492-45ea003411af?w=800&h=600&fit=crop" class="main-image" alt="Imagen principal de la propiedad - Casa Moderna en La Serena">
+                    <div class="thumbnail-gallery" role="region" aria-label="Miniaturas de imágenes">
+                        <button type="button" class="thumbnail-btn" onclick="changeMainImage(this)" aria-label="Ver imagen 1 ampliada" aria-pressed="true" tabindex="0"><img src="https://images.unsplash.com/photo-1570129477492-45ea003411af?w=100&h=100&fit=crop" class="thumbnail active" alt="Miniatura 1"></button>
+                        <button type="button" class="thumbnail-btn" onclick="changeMainImage(this)" aria-label="Ver imagen 2 ampliada" aria-pressed="false" tabindex="0"><img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&h=100&fit=crop" class="thumbnail" alt="Miniatura 2"></button>
+                        <button type="button" class="thumbnail-btn" onclick="changeMainImage(this)" aria-label="Ver imagen 3 ampliada" aria-pressed="false" tabindex="0"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=100&h=100&fit=crop" class="thumbnail" alt="Miniatura 3"></button>
+                        <button type="button" class="thumbnail-btn" onclick="changeMainImage(this)" aria-label="Ver imagen 4 ampliada" aria-pressed="false" tabindex="0"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=100&h=100&fit=crop" class="thumbnail" alt="Miniatura 4"></button>
+                        <button type="button" class="thumbnail-btn" onclick="changeMainImage(this)" aria-label="Ver imagen 5 ampliada" aria-pressed="false" tabindex="0"><img src="https://images.unsplash.com/photo-1545224154-b3eef4e8f8d0?w=100&h=100&fit=crop" class="thumbnail" alt="Miniatura 5"></button>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -597,7 +633,7 @@
                             <div class="property-title-section">
                                 <h1>Casa Moderna en La Serena</h1>
                                 <div class="property-location">
-                                    <i class="bi bi-geo-alt"></i>
+                                    <i class="bi bi-geo-alt" aria-hidden="true"></i>
                                     <span>Sector El Milagro, La Serena</span>
                                 </div>
                                 <div class="property-code">Código: CO125457</div>
@@ -618,30 +654,30 @@
     <div class="container-lg">
         <div class="details-section">
             <h2 class="section-title">Características de la propiedad</h2>
-            <div class="characteristics-grid">
-                <div class="characteristic-item">
-                    <div class="characteristic-icon">
+            <div class="characteristics-grid" role="list">
+                <div class="characteristic-item" role="listitem">
+                    <div class="characteristic-icon" aria-hidden="true">
                         <i class="bi bi-door-closed"></i>
                     </div>
                     <p class="characteristic-label">Dormitorios</p>
                     <p class="characteristic-value">3</p>
                 </div>
-                <div class="characteristic-item">
-                    <div class="characteristic-icon">
+                <div class="characteristic-item" role="listitem">
+                    <div class="characteristic-icon" aria-hidden="true">
                         <i class="bi bi-cup"></i>
                     </div>
                     <p class="characteristic-label">Baños</p>
                     <p class="characteristic-value">2</p>
                 </div>
-                <div class="characteristic-item">
-                    <div class="characteristic-icon">
+                <div class="characteristic-item" role="listitem">
+                    <div class="characteristic-icon" aria-hidden="true">
                         <i class="bi bi-rulers"></i>
                     </div>
                     <p class="characteristic-label">Área Total</p>
                     <p class="characteristic-value">500 m²</p>
                 </div>
-                <div class="characteristic-item">
-                    <div class="characteristic-icon">
+                <div class="characteristic-item" role="listitem">
+                    <div class="characteristic-icon" aria-hidden="true">
                         <i class="bi bi-diagram-3"></i>
                     </div>
                     <p class="characteristic-label">Área Construida</p>
