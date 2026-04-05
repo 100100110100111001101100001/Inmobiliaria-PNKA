@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar Vivienda - PNK Inmobiliaria</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/publicar_vivienda.css">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container-lg">
+            <a class="navbar-brand text-white" href="index.html">PNK Inmobiliaria</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link text-white active" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#propiedades">Propiedades</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#contacto">Contacto</a></li>
+                </ul>
+                <div class="d-flex gap-2 ms-lg-3 flex-column flex-lg-row w-100 w-lg-auto mt-3 mt-lg-0">
+                    <a href="inicio_sesion.html" class="btn btn-outline-light btn-sm">Iniciar sesión</a>
+                    <a href="resgistro_propietario.html" class="btn btn-light btn-sm">Registrarse</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<section class="login-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="login-card card shadow">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h2 class="card-title mb-2">Publicar Vivienda</h2>
+                            <p class="text-muted">Completa los datos de la propiedad para publicarla en el catálogo.</p>
+                        </div>
+                        <form id="publishPropertyForm" onsubmit="handlePropertyPublication(event)">
+                            <div class="mb-4">
+                                <label class="form-label">Tipo de propiedad</label>
+                                <div class="d-flex gap-3 flex-wrap">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tipoPropiedad" id="casa" value="Casa" required>
+                                        <label class="form-check-label" for="casa">Casa</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tipoPropiedad" id="departamento" value="Departamento">
+                                        <label class="form-check-label" for="departamento">Departamento</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="tipoPropiedad" id="terreno" value="Terreno">
+                                        <label class="form-check-label" for="terreno">Terreno</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="imagenes" class="form-label">Añadir fotografías</label>
+                                <input type="file" class="form-control" id="imagenes" name="imagenes" accept="image/*" multiple required>
+                                <div class="form-text">Selecciona entre 1 y 10 imágenes.</div>
+                                <div class="invalid-feedback">Debes subir entre 1 y 10 imágenes.</div>
+                                <div id="preview" class="image-preview mt-3"></div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required placeholder="Describe detalladamente tu propiedad..."></textarea>
+                                <div class="invalid-feedback">La descripción es requerida.</div>
+                            </div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="banos" class="form-label">Cantidad de baños</label>
+                                    <input type="number" class="form-control" id="banos" name="banos" min="0" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="dormitorios" class="form-label">Cantidad de dormitorios</label>
+                                    <input type="number" class="form-control" id="dormitorios" name="dormitorios" min="0" required>
+                                </div>
+                            </div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="areaTotal" class="form-label">Área total del terreno (m²)</label>
+                                    <input type="number" class="form-control" id="areaTotal" name="areaTotal" min="0" step="0.01" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="areaConstruida" class="form-label">Área construida (m²)</label>
+                                    <input type="number" class="form-control" id="areaConstruida" name="areaConstruida" min="0" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="precioPesos" class="form-label">Precio en $</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="precioPesos" name="precioPesos" min="0" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="precioUF" class="form-label">Precio en UF</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="precioUF" name="precioUF" min="0" step="0.01" required>
+                                        <span class="input-group-text">UF</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="fechaPublicacion" class="form-label">Fecha de publicación</label>
+                                <input type="date" class="form-control" id="fechaPublicacion" name="fechaPublicacion" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Características adicionales</label>
+                                <div class="row g-2">
+                                    <div class="col-6 col-md-4"><label class="feature-button" data-feature="bodega"><input type="checkbox" class="d-none" name="bodega" id="bodega"> Bodega</label></div>
+                                    <div class="col-6 col-md-4"><label class="feature-button" data-feature="estacionamiento"><input type="checkbox" class="d-none" name="estacionamiento" id="estacionamiento"> Estacionamiento</label></div>
+                                    <div class="col-6 col-md-4"><label class="feature-button" data-feature="logia"><input type="checkbox" class="d-none" name="logia" id="logia"> Logia</label></div>
+                                    <div class="col-6 col-md-4"><label class="feature-button" data-feature="cocinaAmoblada"><input type="checkbox" class="d-none" name="cocinaAmoblada" id="cocinaAmoblada"> Cocina amoblada</label></div>
+                                    <div class="col-6 col-md-4"><label class="feature-button" data-feature="antejardin"><input type="checkbox" class="d-none" name="antejardin" id="antejardin"> Antejardín</label></div>
+                                    <div class="col-6 col-md-4"><label class="feature-button" data-feature="patioTrasero"><input type="checkbox" class="d-none" name="patioTrasero" id="patioTrasero"> Patio trasero</label></div>
+                                    <div class="col-6 col-md-4"><label class="feature-button" data-feature="piscina"><input type="checkbox" class="d-none" name="piscina" id="piscina"> Piscina</label></div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="ubicacion" class="form-label">Ubicación</label>
+                                <input type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="Ingresa la dirección de tu propiedad" required>
+                                <div class="invalid-feedback">La ubicación es requerida.</div>
+                                <div id="map" class="map-container mt-3"></div>
+                            </div>
+                            <div class="mb-4">
+                                <button type="button" class="btn btn-outline-secondary w-100" id="toggleVisita">Opción de solicitar una visita</button>
+                                <input type="hidden" id="solicitarVisita" name="solicitarVisita" value="false">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 mb-3">Publicar Propiedad</button>
+                            <div class="text-center">
+                                <a href="inicio_sesion.html" class="text-decoration-none">Volver a mi panel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const previewContainer = document.getElementById('preview');
+const imagesInput = document.getElementById('imagenes');
+const visitaInput = document.getElementById('solicitarVisita');
+const toggleVisita = document.getElementById('toggleVisita');
+const mapElement = document.getElementById('map');
+let map;
+let marker;
+let autocomplete;
+
+function updateFeatureButtons() {
+    document.querySelectorAll('.feature-button').forEach(label => {
+        const input = label.querySelector('input');
+        label.classList.toggle('active', input.checked);
+    });
+}
+
+document.querySelectorAll('.feature-button').forEach(label => {
+    label.addEventListener('click', function(e) {
+        e.preventDefault();
+        const checkbox = label.querySelector('input');
+        checkbox.checked = !checkbox.checked;
+        label.classList.toggle('active', checkbox.checked);
+    });
+});
+
+toggleVisita.addEventListener('click', function() {
+    const currentValue = visitaInput.value === 'true';
+    visitaInput.value = (!currentValue).toString();
+    toggleVisita.classList.toggle('active', !currentValue);
+});
+
+imagesInput.addEventListener('change', function() {
+    previewContainer.innerHTML = '';
+    const files = Array.from(imagesInput.files);
+
+    if (files.length === 0 || files.length > 10) {
+        imagesInput.classList.add('is-invalid');
+        return;
+    }
+
+    imagesInput.classList.remove('is-invalid');
+
+    files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = document.createElement('img');
+            img.src = event.target.result;
+            previewContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    });
+});
+
+function initMap() {
+    const defaultPosition = { lat: -33.4489, lng: -70.6693 };
+    map = new google.maps.Map(mapElement, {
+        center: defaultPosition,
+        zoom: 12,
+    });
+    marker = new google.maps.Marker({ position: defaultPosition, map, draggable: true });
+
+    const input = document.getElementById('ubicacion');
+    autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.bindTo('bounds', map);
+
+    autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) return;
+        map.panTo(place.geometry.location);
+        map.setZoom(15);
+        marker.setPosition(place.geometry.location);
+    });
+
+    google.maps.event.addListener(marker, 'dragend', () => {
+        const position = marker.getPosition();
+        map.panTo(position);
+    });
+}
+
+function handlePropertyPublication(event) {
+    event.preventDefault();
+    const form = event.target;
+    const files = Array.from(imagesInput.files);
+
+    if (files.length < 1 || files.length > 10) {
+        imagesInput.classList.add('is-invalid');
+        imagesInput.focus();
+        return;
+    }
+
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+    }
+
+    alert('Propiedad publicada correctamente.');
+    form.reset();
+    previewContainer.innerHTML = '';
+    if (marker) marker.setPosition({ lat: -33.4489, lng: -70.6693 });
+    if (map) map.panTo({ lat: -33.4489, lng: -70.6693 });
+}
+
+window.initMap = initMap;
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_HERE&libraries=places&callback=initMap"></script>
+</body>
+</html>
