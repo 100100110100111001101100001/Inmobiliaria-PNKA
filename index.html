@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNK Inmobiliaria - Tu próximo hogar te espera</title>
+    <!-- Bootstrap CSS from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Navbar Styles */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: #fff !important;
+        }
+
+        .navbar-brand .icon-home {
+            color: var(--secondary-color);
+            margin-right: 8px;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: linear-gradient(135deg, #ecf0f1 0%, #bdc3c7 100%);
+            padding: 40px 0;
+            margin: 20px 0;
+        }
+
+        .search-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .search-form .form-control,
+        .search-form .form-select {
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+        }
+
+        .search-form .form-control:focus,
+        .search-form .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .btn-search {
+            background-color: var(--secondary-color);
+            border: none;
+            padding: 12px 40px;
+            font-weight: 600;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-search:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Filter Buttons */
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            flex: 1;
+            min-width: 140px;
+            background-color: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            color: var(--primary-color);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            background-color: #bdc3c7;
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+        }
+
+        .filter-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .filter-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Filter Buttons */
+        @media (max-width: 576px) {
+            .filter-buttons {
+                gap: 8px;
+            }
+
+            .filter-btn {
+                min-width: 110px;
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+
+            .filter-btn i {
+                display: none;
+            }
+        }
+        .properties-section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .section-subtitle {
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        /* Property Card Styles */
+        .property-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .property-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .property-card .card-img-top {
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .property-type {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .property-card .card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .property-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .property-location {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .property-location i {
+            margin-right: 5px;
+            color: var(--secondary-color);
+        }
+
+        .property-features {
+            color: #95a5a6;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .property-price {
+            color: var(--secondary-color);
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin: 10px 0;
+        }
+
+        .property-code {
+            color: #95a5a6;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .property-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .btn-more-info {
+            flex: 1;
+            background-color: var(--accent-color);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .btn-more-info:hover {
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-cart {
+            width: 44px;
+            height: 44px;
+            background-color: #ecf0f1;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-cart:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Cart Badge */
+        .cart-badge {
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-section h5 {
+            color: white;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+
+        /* Alert Styles */
+        .alert-login {
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .property-buttons {
+                flex-direction: column;
+            }
+
+            .btn-cart {
+                width: 100%;
+                height: auto;
+                padding: 8px;
+            }
+
+            .search-form {
+                gap: 10px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR / HEADER -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container-lg">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-house-fill icon-home"></i>PNK Inmobiliaria
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#inicio">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#propiedades">Propiedades</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacto">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex gap-2 ms-lg-3 flex-column flex-lg-row w-100 w-lg-auto mt-3 mt-lg-0">
+                    <a href="inicio_sesion.html" class="btn btn-outline-light btn-sm">
+                        <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+                    </a>
+                    <a href="resgistro_propietario.html" class="btn btn-light btn-sm">
+                        <i class="bi bi-person-plus"></i> Registrarse
+                    </a>
+                    <button class="btn btn-outline-light btn-sm position-relative w-100 w-lg-auto" id="cartBtn">
+                        <i class="bi bi-heart"></i> Mi carrito
+                        <span class="cart-badge position-absolute top-0 start-100 translate-middle">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SEARCH SECTION -->
+    <section class="search-section" id="buscar">
+        <div class="container-lg">
+            <h2 class="search-title">Busca tu próximo hogar</h2>
+            
+            <!-- Filter Type Selector -->
+            <div class="row g-3 mb-4">
+                <div class="col-12">
+                    <label for="filterType" class="form-label fw-600">¿Cómo deseas buscar?</label>
+                    <div class="filter-buttons">
+                        <button type="button" class="filter-btn active" data-filter="location" onclick="selectFilterType('location')">
+                            <i class="bi bi-geo-alt"></i> Por Ubicación
+                        </button>
+                        <button type="button" class="filter-btn" data-filter="bedrooms" onclick="selectFilterType('bedrooms')">
+                            <i class="bi bi-door-closed"></i> Por Habitaciones
+                        </button>
+                        <button type="button" class="filter-btn" data-filter="bathrooms" onclick="selectFilterType('bathrooms')">
+                            <i class="bi bi-cup"></i> Por Baños
+                        </button>
+                        <button type="button" class="filter-btn" data-filter="parking" onclick="selectFilterType('parking')">
+                            <i class="bi bi-car-front"></i> Por Estacionamiento
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <form class="search-form" onsubmit="handleSearch(event)">
+                <!-- Location Filter -->
+                <div id="locationFilter" class="filter-content active">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-12 col-md-3">
+                            <label for="provincia" class="form-label fw-600">Provincia</label>
+                            <select class="form-select" id="provincia">
+                                <option value="">Selecciona una provincia</option>
+                                <option value="elqui">Región de Coquimbo - Elqui</option>
+                                <option value="limari">Región de Coquimbo - Limarí</option>
+                                <option value="choapa">Región de Coquimbo - Choapa</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label for="comuna" class="form-label fw-600">Comuna</label>
+                            <select class="form-select" id="comuna">
+                                <option value="">Selecciona una comuna</option>
+                                <option value="la-serena">La Serena</option>
+                                <option value="coquimbo">Coquimbo</option>
+                                <option value="ovalle">Ovalle</option>
+                                <option value="la-higuera">La Higuera</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label for="sector" class="form-label fw-600">Sector</label>
+                            <input type="text" class="form-control" id="sector" placeholder="Ej. El Milagro, Barrio Estación...">
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button type="submit" class="btn btn-search">
+                                <i class="bi bi-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bedrooms Filter -->
+                <div id="bedroomsFilter" class="filter-content">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-12 col-md-4">
+                            <label for="bedroomCount" class="form-label fw-600">Número de Habitaciones</label>
+                            <select class="form-select" id="bedroomCount">
+                                <option value="">Selecciona cantidad</option>
+                                <option value="1">1 Habitación</option>
+                                <option value="2">2 Habitaciones</option>
+                                <option value="3">3 Habitaciones</option>
+                                <option value="4">4 Habitaciones</option>
+                                <option value="5">5+ Habitaciones</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="propertyType" class="form-label fw-600">Tipo de Propiedad</label>
+                            <select class="form-select" id="propertyType">
+                                <option value="">Todos los tipos</option>
+                                <option value="casa">Casa</option>
+                                <option value="departamento">Departamento</option>
+                                <option value="terreno">Terreno</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="submit" class="btn btn-search">
+                                <i class="bi bi-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bathrooms Filter -->
+                <div id="bathroomsFilter" class="filter-content">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-12 col-md-4">
+                            <label for="bathroomCount" class="form-label fw-600">Número de Baños</label>
+                            <select class="form-select" id="bathroomCount">
+                                <option value="">Selecciona cantidad</option>
+                                <option value="1">1 Baño</option>
+                                <option value="2">2 Baños</option>
+                                <option value="3">3 Baños</option>
+                                <option value="4">4+ Baños</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="propertyType2" class="form-label fw-600">Tipo de Propiedad</label>
+                            <select class="form-select" id="propertyType2">
+                                <option value="">Todos los tipos</option>
+                                <option value="casa">Casa</option>
+                                <option value="departamento">Departamento</option>
+                                <option value="terreno">Terreno</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="submit" class="btn btn-search">
+                                <i class="bi bi-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parking Filter -->
+                <div id="parkingFilter" class="filter-content">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-12 col-md-4">
+                            <label for="parkingSpaces" class="form-label fw-600">Espacios de Estacionamiento</label>
+                            <select class="form-select" id="parkingSpaces">
+                                <option value="">Selecciona cantidad mínima</option>
+                                <option value="1">Con 1+ Estacionamiento</option>
+                                <option value="2">Con 2+ Estacionamientos</option>
+                                <option value="3">Con 3+ Estacionamientos</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="propertyType3" class="form-label fw-600">Tipo de Propiedad</label>
+                            <select class="form-select" id="propertyType3">
+                                <option value="">Todos los tipos</option>
+                                <option value="casa">Casa</option>
+                                <option value="departamento">Departamento</option>
+                                <option value="terreno">Terreno</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <button type="submit" class="btn btn-search">
+                                <i class="bi bi-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- PROPERTIES SECTION -->
+    <section class="properties-section" id="propiedades">
+        <div class="container-lg">
+            <h2 class="section-title">Propiedades en venta</h2>
+            <p class="section-subtitle">Explora nuestro completo catálogo inmobiliario en la región de Coquimbo</p>
+
+            <!-- Property Cards Grid -->
+            <div class="row g-4 mb-5">
+                <!-- Property 1 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card property-card">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1570129477492-45ea003411af?w=400&h=300&fit=crop" class="card-img-top" alt="Casa moderna en La Serena">
+                            <span class="property-type">Casa</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="property-title">Casa Moderna en La Serena</h5>
+                            <div class="property-location">
+                                <i class="bi bi-geo-alt"></i>
+                                <span>Sector El Milagro, La Serena</span>
+                            </div>
+                            <div class="property-features">
+                                <span><i class="bi bi-door-closed"></i> 3 dorm.</span>
+                                <span><i class="bi bi-cup"></i> 2 baños</span>
+                                <span><i class="bi bi-rulers"></i> 120 m²</span>
+                            </div>
+                            <div class="property-price">$154.000.000</div>
+                            <div class="property-code">Cód: CO125457</div>
+                            <div class="property-buttons">
+                                <a href="detalle-propiedad.html?id=1" class="btn-more-info">
+                                    Quiero saber más
+                                </a>
+                                <button type="button" class="btn-cart" onclick="handleCartClick(event)">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 2 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card property-card">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=300&fit=crop" class="card-img-top" alt="Departamento en Coquimbo">
+                            <span class="property-type">Departamento</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="property-title">Departamento Frente al Mar</h5>
+                            <div class="property-location">
+                                <i class="bi bi-geo-alt"></i>
+                                <span>Barrio Estación, Coquimbo</span>
+                            </div>
+                            <div class="property-features">
+                                <span><i class="bi bi-door-closed"></i> 2 dorm.</span>
+                                <span><i class="bi bi-cup"></i> 1 baño</span>
+                                <span><i class="bi bi-rulers"></i> 85 m²</span>
+                            </div>
+                            <div class="property-price">$98.500.000</div>
+                            <div class="property-code">Cód: CQ087234</div>
+                            <div class="property-buttons">
+                                <a href="detalle-propiedad.html?id=2" class="btn-more-info">
+                                    Quiero saber más
+                                </a>
+                                <button type="button" class="btn-cart" onclick="handleCartClick(event)">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 3 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card property-card">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1566682773867-c563f37b9f2e?w=400&h=300&fit=crop" class="card-img-top" alt="Terreno en Ovalle">
+                            <span class="property-type">Terreno</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="property-title">Terreno Plano en Ovalle</h5>
+                            <div class="property-location">
+                                <i class="bi bi-geo-alt"></i>
+                                <span>Zona Industrial, Ovalle</span>
+                            </div>
+                            <div class="property-features">
+                                <span><i class="bi bi-rulers"></i> 500 m²</span>
+                                <span><i class="bi bi-door-closed"></i> —</span>
+                                <span><i class="bi bi-cup"></i> —</span>
+                            </div>
+                            <div class="property-price">$45.000.000</div>
+                            <div class="property-code">Cód: OV145892</div>
+                            <div class="property-buttons">
+                                <a href="detalle-propiedad.html?id=3" class="btn-more-info">
+                                    Quiero saber más
+                                </a>
+                                <button type="button" class="btn-cart" onclick="handleCartClick(event)">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 4 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card property-card">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=300&fit=crop" class="card-img-top" alt="Casa con piscina">
+                            <span class="property-type">Casa</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="property-title">Casa con Piscina</h5>
+                            <div class="property-location">
+                                <i class="bi bi-geo-alt"></i>
+                                <span>Sector Peñuelas, La Serena</span>
+                            </div>
+                            <div class="property-features">
+                                <span><i class="bi bi-door-closed"></i> 4 dorm.</span>
+                                <span><i class="bi bi-cup"></i> 3 baños</span>
+                                <span><i class="bi bi-rulers"></i> 200 m²</span>
+                            </div>
+                            <div class="property-price">$256.750.000</div>
+                            <div class="property-code">Cód: LS234567</div>
+                            <div class="property-buttons">
+                                <a href="detalle-propiedad.html?id=4" class="btn-more-info">
+                                    Quiero saber más
+                                </a>
+                                <button type="button" class="btn-cart" onclick="handleCartClick(event)">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 5 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card property-card">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1565183938294-7563f3ce68c9?w=400&h=300&fit=crop" class="card-img-top" alt="Departamento zona céntrica">
+                            <span class="property-type">Departamento</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="property-title">Dpto. Zona Céntrica</h5>
+                            <div class="property-location">
+                                <i class="bi bi-geo-alt"></i>
+                                <span>Centro, La Serena</span>
+                            </div>
+                            <div class="property-features">
+                                <span><i class="bi bi-door-closed"></i> 2 dorm.</span>
+                                <span><i class="bi bi-cup"></i> 2 baños</span>
+                                <span><i class="bi bi-rulers"></i> 90 m²</span>
+                            </div>
+                            <div class="property-price">$120.000.000</div>
+                            <div class="property-code">Cód: LS123456</div>
+                            <div class="property-buttons">
+                                <a href="detalle-propiedad.html?id=5" class="btn-more-info">
+                                    Quiero saber más
+                                </a>
+                                <button type="button" class="btn-cart" onclick="handleCartClick(event)">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property 6 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card property-card">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1550355291-bbee04a92027?w=400&h=300&fit=crop" class="card-img-top" alt="Casa nueva construcción">
+                            <span class="property-type">Casa</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="property-title">Casa Nueva Construcción</h5>
+                            <div class="property-location">
+                                <i class="bi bi-geo-alt"></i>
+                                <span>Proyecto Nueva Viña, Coquimbo</span>
+                            </div>
+                            <div class="property-features">
+                                <span><i class="bi bi-door-closed"></i> 3 dorm.</span>
+                                <span><i class="bi bi-cup"></i> 2 baños</span>
+                                <span><i class="bi bi-rulers"></i> 130 m²</span>
+                            </div>
+                            <div class="property-price">$178.900.000</div>
+                            <div class="property-code">Cód: CQ234891</div>
+                            <div class="property-buttons">
+                                <a href="detalle-propiedad.html?id=6" class="btn-more-info">
+                                    Quiero saber más
+                                </a>
+                                <button type="button" class="btn-cart" onclick="handleCartClick(event)">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guest Message -->
+            <div class="alert alert-info alert-login d-flex align-items-center justify-content-between">
+                <div>
+                    <i class="bi bi-info-circle"></i>
+                    <strong>¿Quieres guardar propiedades favoritas?</strong> Crea una cuenta o inicia sesión para acceder a todas las funciones.
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="inicio_sesion.html" class="btn btn-sm btn-primary">Iniciar sesión</a>
+                    <a href="resgistro_propietario.html" class="btn btn-sm btn-success">Registrarse</a>
+                </div>
+            </div>
+
+            <!-- Button to see all properties -->
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="mas_propiedades.html" class="btn" style="background-color: var(--accent-color); color: white; padding: 12px 40px; font-weight: 600; border-radius: 8px; text-decoration: none; font-size: 1.1rem;">
+                    <i class="bi bi-building"></i> Ver todas las propiedades
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contacto">
+        <div class="container-lg">
+            <div class="row">
+                <div class="col-md-3 footer-section mb-4">
+                    <h5>Sobre PNK Inmobiliaria</h5>
+                    <p style="font-size: 0.9rem; color: #bdc3c7;">
+                        Somos especialistas en venta y arriendo de propiedades en la región de Coquimbo. Trabajamos para conectar propietarios con clientes de forma confiable y transparente.
+                    </p>
+                </div>
+                <div class="col-md-3 footer-section">
+                    <h5>Enlaces rápidos</h5>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="#propiedades">Propiedades</a></li>
+                        <li><a href="mas_informacion.html">Más Información</a></li>
+                        <li><a href="inicio_sesion.html">Iniciar sesión</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-section">
+                    <h5>Términos legales</h5>
+                    <ul>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Política de Cookies</a></li>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-section">
+                    <h5>Síguenos</h5>
+                    <div class="social-icons">
+                        <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" title="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" title="Twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.9rem;">
+                        <i class="bi bi-telephone"></i> +56 9 1234 5678<br>
+                        <i class="bi bi-envelope"></i> contacto@pnkinmobiliaria.cl
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 PNK Inmobiliaria. Todos los derechos reservados. | Diseñado con <i class="bi bi-heart-fill" style="color: var(--secondary-color);"></i> para ti.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Handle search form submission
+        function handleSearch(event) {
+            event.preventDefault();
+            
+            // Determine which filter is active
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            let searchMessage = '';
+
+            switch(activeFilter) {
+                case 'location':
+                    const provincia = document.getElementById('provincia').value;
+                    const comuna = document.getElementById('comuna').value;
+                    const sector = document.getElementById('sector').value;
+                    searchMessage = `Búsqueda simulada por Ubicación:\n\nProvincia: ${provincia || 'No especificada'}\nComuna: ${comuna || 'No especificada'}\nSector: ${sector || 'No especificado'}\n\nEn una aplicación real, se filtrarían las propiedades según estos criterios.`;
+                    break;
+                
+                case 'bedrooms':
+                    const bedrooms = document.getElementById('bedroomCount').value;
+                    const propType1 = document.getElementById('propertyType').value;
+                    searchMessage = `Búsqueda simulada por Habitaciones:\n\nHabitaciones: ${bedrooms || 'No especificadas'}\nTipo: ${propType1 || 'Todos'}\n\nMostrando propiedades con estos criterios.`;
+                    break;
+                
+                case 'bathrooms':
+                    const bathrooms = document.getElementById('bathroomCount').value;
+                    const propType2 = document.getElementById('propertyType2').value;
+                    searchMessage = `Búsqueda simulada por Baños:\n\nBaños: ${bathrooms || 'No especificados'}\nTipo: ${propType2 || 'Todos'}\n\nMostrando propiedades con estos criterios.`;
+                    break;
+                
+                case 'parking':
+                    const parking = document.getElementById('parkingSpaces').value;
+                    const propType3 = document.getElementById('propertyType3').value;
+                    searchMessage = `Búsqueda simulada por Estacionamiento:\n\nEstacionamientos: ${parking || 'No especificados'}\nTipo: ${propType3 || 'Todos'}\n\nMostrando propiedades con estos criterios.`;
+                    break;
+            }
+
+            if (searchMessage) {
+                alert(searchMessage);
+            }
+            return false;
+        }
+
+        // Switch between filter types
+        function selectFilterType(filterType) {
+            // Hide all filter contents
+            document.querySelectorAll('.filter-content').forEach(filter => {
+                filter.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected filter content
+            const filterContent = document.getElementById(filterType + 'Filter');
+            if (filterContent) {
+                filterContent.classList.add('active');
+            }
+
+            // Add active class to clicked button
+            event.target.closest('.filter-btn').classList.add('active');
+        }
+
+        // Handle add to cart clicks (when not logged in)
+        function handleCartClick(event) {
+            event.preventDefault();
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-warning alert-dismissible fade show position-fixed top-50 start-50 translate-middle';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.style.minWidth = '350px';
+            alertDiv.innerHTML = `
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <h4 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> Acceso requerido</h4>
+                <p>Para guardar propiedades en tu carrito de intereses, debes <strong>crear una cuenta o iniciar sesión</strong>.</p>
+                <hr>
+                <div class="d-flex gap-2 justify-content-end">
+                    <a href="inicio_sesion.html" class="btn btn-sm btn-warning">Iniciar sesión</a>
+                    <a href="resgistro_propietario.html" class="btn btn-sm btn-success">Registrarse</a>
+                </div>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Handle cart button click
+        document.getElementById('cartBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            alert('Carrito de intereses:\n\nDebes iniciar sesión para ver tus propiedades guardadas.\n\nTienes 0 propiedades guardadas.');
+        });
+    </script>
+
+</body>
+</html>
