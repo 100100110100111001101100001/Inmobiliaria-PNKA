@@ -51,56 +51,105 @@
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-5">
                 <div class="login-card card shadow">
+                    <div class="card-header border-0 p-3">
+                        <ul class="nav nav-tabs nav-fill" id="loginTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="usuario-tab" data-bs-toggle="tab" data-bs-target="#usuario" type="button" role="tab" aria-controls="usuario" aria-selected="true">Usuario</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="admin-tab" data-bs-toggle="tab" data-bs-target="#administrador" type="button" role="tab" aria-controls="administrador" aria-selected="false">Administrador</button>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="card-body p-5">
-                        <div class="text-center mb-4">
-                            <h2 class="card-title mb-2">Iniciar Sesión</h2>
-                            <p class="text-muted">Accede con tu correo electrónico y contraseña</p>
+                        <div class="tab-content" id="loginTabsContent">
+                            <!-- Tab Usuario Regular -->
+                            <div class="tab-pane fade show active" id="usuario" role="tabpanel" aria-labelledby="usuario-tab">
+                                <div class="text-center mb-4">
+                                    <h2 class="card-title mb-2">Iniciar Sesión</h2>
+                                    <p class="text-muted">Accede con tu correo electrónico y contraseña</p>
+                                </div>
+
+                                <form id="loginForm" onsubmit="handleLogin(event)">
+                                    <div class="mb-4">
+                                        <label for="email" class="form-label">
+                                            Correo Electrónico
+                                        </label>
+                                        <input type="email" class="form-control" id="email" name="email" required placeholder="tu@email.com">
+                                        <div class="invalid-feedback">
+                                            Por favor ingresa un correo electrónico válido.
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="password" class="form-label">
+                                            Contraseña
+                                        </label>
+                                        <input type="password" class="form-control" id="password" name="password" required minlength="8" placeholder="Tu contraseña">
+                                        <div class="invalid-feedback">
+                                            La contraseña debe tener al menos 8 caracteres.
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary w-100 mb-3">
+                                        Iniciar sesión
+                                    </button>
+
+                                    <div class="text-center mb-3">
+                                        <a href="recuperar_contraseña.html" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
+                                    </div>
+
+                                    <div class="d-grid gap-2 mb-2">
+                                        <a href="registro_gestor.html" class="btn btn-outline-primary">
+                                            Registrarse como Gestor
+                                        </a>
+                                        <a href="resgistro_propietario.html" class="btn btn-outline-primary">
+                                            Registrarse como Propietario
+                                        </a>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <a href="index.html" class="btn btn-outline-secondary w-100">
+                                            Volver al Inicio
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Tab Administrador -->
+                            <div class="tab-pane fade" id="administrador" role="tabpanel" aria-labelledby="admin-tab">
+                                <div class="text-center mb-4">
+                                    <h2 class="card-title mb-2">Panel de Administrador</h2>
+                                    <p class="text-muted">Accede al dashboard de administración</p>
+                                </div>
+
+                                <form id="adminForm" onsubmit="handleAdminLogin(event)">
+                                    <div class="mb-4">
+                                        <label for="adminEmail" class="form-label">
+                                            Correo Electrónico
+                                        </label>
+                                        <input type="email" class="form-control" id="adminEmail" name="adminEmail" placeholder="admin@email.com">
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="adminPassword" class="form-label">
+                                            Contraseña
+                                        </label>
+                                        <input type="password" class="form-control" id="adminPassword" name="adminPassword" placeholder="Tu contraseña">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary w-100 mb-3">
+                                        Acceder al Dashboard
+                                    </button>
+
+                                    <div class="text-center">
+                                        <a href="index.html" class="btn btn-outline-secondary w-100">
+                                            Volver al Inicio
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-
-                        <form id="loginForm" onsubmit="handleLogin(event)">
-                            <div class="mb-4">
-                                <label for="email" class="form-label">
-                                    Correo Electrónico
-                                </label>
-                                <input type="email" class="form-control" id="email" name="email" required placeholder="tu@email.com">
-                                <div class="invalid-feedback">
-                                    Por favor ingresa un correo electrónico válido.
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="password" class="form-label">
-                                    Contraseña
-                                </label>
-                                <input type="password" class="form-control" id="password" name="password" required minlength="8" placeholder="Tu contraseña">
-                                <div class="invalid-feedback">
-                                    La contraseña debe tener al menos 8 caracteres.
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary w-100 mb-3">
-                                Iniciar sesión
-                            </button>
-
-                            <div class="text-center mb-3">
-                                <a href="recuperar_contraseña.html" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
-                            </div>
-
-                            <div class="d-grid gap-2 mb-2">
-                                <a href="registro_gestor.html" class="btn btn-outline-primary">
-                                    Registrarse como Gestor
-                                </a>
-                                <a href="resgistro_propietario.html" class="btn btn-outline-primary">
-                                    Registrarse como Propietario
-                                </a>
-                            </div>
-
-                            <div class="text-center">
-                                <a href="index.html" class="btn btn-outline-secondary w-100">
-                                    Volver al Inicio
-                                </a>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -133,6 +182,13 @@ function handleLogin(event) {
     // Simulación de inicio de sesión
     alert('Inicio de sesión exitoso. Bienvenido a PNK Inmobiliaria.');
     window.location.href = 'index.html';
+}
+
+function handleAdminLogin(event) {
+    event.preventDefault();
+    
+    // Sin validación de datos, directo al dashboard
+    window.location.href = 'dash_administrador.html';
 }
 
 // Add the same styling used in recuperar_contraseña.html
@@ -207,14 +263,28 @@ document.addEventListener('DOMContentLoaded', function() {
             color: #0d6efd;
             margin-right: 8px;
         }
+
+        .nav-tabs .nav-link {
+            color: #6c757d;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #0d6efd;
+            border-bottom: 3px solid #0d6efd;
+            background: transparent;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #0a58ca;
+            border-bottom-color: #0d6efd;
+        }
     `;
     document.head.appendChild(style);
 });
 </script>
 
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> a7ac12472cce6d453a83907972901e611ada442e
